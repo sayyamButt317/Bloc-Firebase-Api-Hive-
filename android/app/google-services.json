@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "541342560029",
+    "project_id": "bloc-2388b",
+    "storage_bucket": "bloc-2388b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541342560029:android:c8d72333cd4e5a17e17bf4",
+        "android_client_info": {
+          "package_name": "com.example.msb_task3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkpQaIb31HCe1NWu6psoHtAJPiBmAi_HQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
