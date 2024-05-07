@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:msb_task3/Network/model/firebase_model.dart';
-import 'package:msb_task3/Network/repository/firebaserepository.dart';
+import 'package:msb_task3/Network/repository/firebase_repository.dart';
 
 part 'firebase_event.dart';
 part 'firebase_state.dart';

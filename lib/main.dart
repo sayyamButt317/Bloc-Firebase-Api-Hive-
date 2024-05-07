@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:msb_task3/Network/repository/firebaserepository.dart';
+import 'package:msb_task3/Network/repository/firebase_repository.dart';
 import 'package:msb_task3/Network/service/db_model.dart';
 import 'package:msb_task3/Utils/navigation_bar.dart';
 import 'package:msb_task3/bloc/api/api_bloc.dart';
