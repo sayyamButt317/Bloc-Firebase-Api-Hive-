@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:msb_task3/bloc/api/api_event.dart';
@@ -59,9 +60,20 @@ class _ApiScreenState extends State<ApiScreen> {
                               if (state.temPostList.isNotEmpty) {
                                 final item = state.temPostList[index];
                                 return ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(item.avatar ?? ''),
+                                  leading:
+                                  CachedNetworkImage(
+                                    imageUrl: item.avatar ?? '',
+                                    imageBuilder: (context, imageProvider) => Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                            colorFilter:
+                                            const ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                   title: Column(
                                     crossAxisAlignment:

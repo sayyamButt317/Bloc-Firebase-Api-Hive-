@@ -10,11 +10,11 @@ class FirebaseBloc extends Bloc<FirebaseEvent, FirebaseState> {
   final FirebaseRepository productRepository;
   FirebaseBloc({required this.productRepository}) : super(FirebaseInitial()) {
     on<Create>((event, emit) async {
-      emit(FirebaseAdded());
-      await Future.delayed(const Duration(seconds: 1));
+      emit(FirebaseAdding());
       try {
         await productRepository.create(name: event.name);
-        emit(FirebaseAdded());
+        final updatedData = await productRepository.get();
+        emit(FirebaseLoaded(mydata: updatedData)); 
       } catch (e) {
         emit(FirebaseError(e.toString()));
       }

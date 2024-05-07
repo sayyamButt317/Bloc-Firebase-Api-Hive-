@@ -11,7 +11,9 @@ class FirebaseScreen extends StatefulWidget {
 
 class _FirebaseScreenState extends State<FirebaseScreen> {
   late TextEditingController textEditingController;
+  final _formKey = GlobalKey<FormState>();
 
+  @override
   @override
   void initState() {
     super.initState();
@@ -35,62 +37,74 @@ class _FirebaseScreenState extends State<FirebaseScreen> {
       body: BlocListener<FirebaseBloc, FirebaseState>(
         listener: (context, state) {
           if (state is FirebaseAdded) {
+            BlocProvider.of<FirebaseBloc>(context).add(const GetData());
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Data Added")),
             );
           }
         },
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: textEditingController,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Data',
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter data ";
+                    }
+                    return null;
+                  },
+                  controller: textEditingController,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter Data',
+                  ),
                 ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () => _create(textEditingController.text),
-              child: const Text('Add Data'),
-            ),
-            Expanded(
-              child: BlocBuilder<FirebaseBloc, FirebaseState>(
-                builder: (context, state) {
-                  if (state is FirebaseLoaded) {
-                    return ListView.builder(
-                      itemCount: state.mydata.length,
-                      itemBuilder: (_, index) {
-                        final product = state.mydata[index];
-                        return ListTile(
-                          title: Text(product.name),
-                        );
-                      },
-                    );
-                  } else if (state is FirebaseLoading ||
-                      state is FirebaseAdding) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state is FirebaseError) {
-                    return const Center(
-                      child: Text("Error"),
-                    );
-                  } else {
-                    return Container();
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final newData = textEditingController.text;
+                    BlocProvider.of<FirebaseBloc>(context)
+                        .add(Create(name: newData));
+                    textEditingController.clear();
                   }
                 },
+                child: const Text('Add Data'),
               ),
-            ),
-          ],
+              Expanded(
+                child: BlocBuilder<FirebaseBloc, FirebaseState>(
+                  builder: (context, state) {
+                    if (state is FirebaseLoaded) {
+                      return ListView.builder(
+                        itemCount: state.mydata.length,
+                        itemBuilder: (_, index) {
+                          final product = state.mydata[index];
+                          return ListTile(
+                            title: Text(product.name),
+                          );
+                        },
+                      );
+                    } else if (state is FirebaseLoading ||
+                        state is FirebaseAdding) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is FirebaseError) {
+                      return const Center(
+                        child: Text("Error"),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  Future<void> _create(String data) async {
-    BlocProvider.of<FirebaseBloc>(context).add(Create(data));
-    textEditingController.clear();
   }
 }

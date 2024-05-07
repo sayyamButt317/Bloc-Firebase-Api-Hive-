@@ -9,7 +9,10 @@ abstract class FirebaseEvent extends Equatable {
 class Create extends FirebaseEvent {
   final String name;
 
-  const Create(this.name);
+  const Create({required this.name});
+
+  @override
+  List<Object> get props => [name];
 }
 
 class GetData extends FirebaseEvent {

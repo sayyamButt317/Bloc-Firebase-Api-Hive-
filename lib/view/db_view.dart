@@ -13,6 +13,7 @@ class HiveDatabaseScreen extends StatefulWidget {
 
 class _HiveDatabaseScreenState extends State<HiveDatabaseScreen> {
   final TextEditingController textEditingController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -32,29 +33,38 @@ class _HiveDatabaseScreenState extends State<HiveDatabaseScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: textEditingController,
-                    decoration: const InputDecoration(
-                      labelText: 'Enter Data',
+            child: Form(
+              key: _formKey,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter data ";
+                        }
+                        return null;
+                      },
+                      controller: textEditingController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Data',
+                      ),
                     ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    final newData = textEditingController.text;
-                    if (newData.isNotEmpty) {
-                      BlocProvider.of<DbBloc>(context).add(
-                        Create(hivedbModel: HivedbModel()..name = newData),
-                      );
-                      textEditingController.clear();
-                    }
-                  },
-                  child: const Text('Add Data'),
-                ),
-              ],
+                  ElevatedButton(
+                    onPressed: () {
+                      final newData = textEditingController.text;
+                      if (_formKey.currentState!.validate()) {
+                        BlocProvider.of<DbBloc>(context).add(
+                          Create(hivedbModel: HivedbModel()..name = newData),
+                        );
+                        textEditingController.clear();
+                      }
+                    },
+                    child: const Text('Add Data'),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),
