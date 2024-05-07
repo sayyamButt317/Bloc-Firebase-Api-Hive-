@@ -17,7 +17,7 @@ class _ApiScreenState extends State<ApiScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<UserBloc>().add(PostFetched());
+    context.read<ApiBloc>().add(PostFetched());
   }
 
   @override
@@ -27,14 +27,14 @@ class _ApiScreenState extends State<ApiScreen> {
         title: const Text('Api Screen'),
         centerTitle: true,
       ),
-      body: BlocBuilder<UserBloc, UserState>(
+      body: BlocBuilder<ApiBloc, ApiState>(
         builder: (context, state) {
           switch (state.postStatus) {
-            case PostStatus.loading:
+            case TaskStatus.loading:
               return const Center(child: CircularProgressIndicator());
-            case PostStatus.failure:
+            case TaskStatus.failure:
               return Center(child: Text(state.message.toString()));
-            case PostStatus.success:
+            case TaskStatus.success:
               return Column(
                 children: [
                   Padding(
@@ -45,7 +45,7 @@ class _ApiScreenState extends State<ApiScreen> {
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (filtervalue) {
-                        context.read<UserBloc>().add(SearchItem(filtervalue));
+                        context.read<ApiBloc>().add(SearchItem(filtervalue));
                       },
                     ),
                   ),
@@ -60,20 +60,23 @@ class _ApiScreenState extends State<ApiScreen> {
                               if (state.temPostList.isNotEmpty) {
                                 final item = state.temPostList[index];
                                 return ListTile(
-                                  leading:
-                                  CachedNetworkImage(
+                                  leading: CachedNetworkImage(
                                     imageUrl: item.avatar ?? '',
-                                    imageBuilder: (context, imageProvider) => Container(
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: imageProvider,
                                             fit: BoxFit.cover,
-                                            colorFilter:
-                                            const ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+                                            colorFilter: const ColorFilter.mode(
+                                                Colors.red,
+                                                BlendMode.colorBurn)),
                                       ),
                                     ),
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                   title: Column(
                                     crossAxisAlignment:

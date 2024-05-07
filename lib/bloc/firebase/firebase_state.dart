@@ -1,6 +1,6 @@
 part of 'firebase_bloc.dart';
 
-sealed class FirebaseState extends Equatable {
+abstract class FirebaseState extends Equatable {
   const FirebaseState();
 }
 
@@ -32,7 +32,7 @@ class FirebaseLoading extends FirebaseState {
 }
 
 class FirebaseLoaded extends FirebaseState {
-  final List<ProductModel> mydata;
+  final List<FirebaseModel> mydata;
   const FirebaseLoaded({required this.mydata});
 
   @override

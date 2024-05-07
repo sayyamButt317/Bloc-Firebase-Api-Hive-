@@ -1,8 +1,7 @@
 part of 'firebase_bloc.dart';
 
-abstract class FirebaseEvent extends Equatable {
+abstract class FirebaseEvent {
   const FirebaseEvent();
-  @override
   List<Object> get props => [];
 }
 

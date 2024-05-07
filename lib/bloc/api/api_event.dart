@@ -1,13 +1,10 @@
-import 'package:equatable/equatable.dart';
-
-abstract class UserEvent extends Equatable {
-  @override
+abstract class ApiEvent {
   List<Object> get props => [];
 }
 
-class PostFetched extends UserEvent {}
+class PostFetched extends ApiEvent {}
 
-class SearchItem extends UserEvent {
+class SearchItem extends ApiEvent {
   final String query;
   SearchItem(this.query);
 }

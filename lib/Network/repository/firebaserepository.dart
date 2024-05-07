@@ -16,12 +16,12 @@ class FirebaseRepository {
     }
   }
 
-  Future<List<ProductModel>> get() async {
-    List<ProductModel> proList = [];
+  Future<List<FirebaseModel>> get() async {
+    List<FirebaseModel> proList = [];
     try {
       final pro = await FirebaseFirestore.instance.collection('data').get();
       pro.docs.forEach((element) {
-        return proList.add(ProductModel.fromJson(element.data()));
+        return proList.add(FirebaseModel.fromJson(element.data()));
       });
       return proList;
     } on FirebaseException catch (e) {

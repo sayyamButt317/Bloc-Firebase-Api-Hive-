@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:msb_task3/Network/model/user_model.dart';
 
-class PostRepository {
+class ApiRepository {
   final String baseUrl;
 
-  PostRepository({required this.baseUrl});
+  ApiRepository({required this.baseUrl});
 
-  Future<List<UserModel>> fetchHttpData() async {
+  Future<List<UserModel>> getUserData() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/users'));
 

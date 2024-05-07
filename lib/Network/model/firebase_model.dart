@@ -1,11 +1,11 @@
-class ProductModel{
+class FirebaseModel {
   final String name;
 
-  ProductModel({
+  FirebaseModel({
     required this.name,
-});
+  });
 
-  factory ProductModel.fromJson(Map<String,dynamic>json){
-    return ProductModel(name:json['name']);
+  factory FirebaseModel.fromJson(Map<String, dynamic> json) {
+    return FirebaseModel(name: json['name']);
   }
 }

@@ -5,32 +5,32 @@ import 'package:msb_task3/enum/status.dart';
 import 'api_event.dart';
 import 'package:msb_task3/Network/repository/api_repository.dart';
 
-class UserBloc extends Bloc<UserEvent, UserState> {
-  late final PostRepository postRepository;
+class ApiBloc extends Bloc<ApiEvent, ApiState> {
+  late final ApiRepository postRepository;
   List<UserModel> temPostList = [];
-  UserBloc() : super(const UserState()) {
-    postRepository = PostRepository(baseUrl: 'https://reqres.in/api');
+  ApiBloc() : super(const ApiState()) {
+    postRepository = ApiRepository(baseUrl: 'https://reqres.in/api');
     on<PostFetched>(_fetchDataApi);
     on<SearchItem>(_filterList);
   }
 
-  void _fetchDataApi(PostFetched event, Emitter<UserState> emit) async {
+  void _fetchDataApi(PostFetched event, Emitter<ApiState> emit) async {
     try {
-      final userList = await postRepository.fetchHttpData();
+      final userList = await postRepository.getUserData();
       emit(state.copyWith(
-        postStatus: PostStatus.success,
+        postStatus: TaskStatus.success,
         message: 'Success',
         postList: userList,
       ));
     } catch (error) {
       emit(state.copyWith(
-        postStatus: PostStatus.failure,
+        postStatus: TaskStatus.failure,
         message: error.toString(),
       ));
     }
   }
 
-  void _filterList(SearchItem event, Emitter<UserState> emit) async {
+  void _filterList(SearchItem event, Emitter<ApiState> emit) async {
     if (event.query.isEmpty) {
       emit(state.copyWith(temPostList: [], searchMessage: ""));
     } else {

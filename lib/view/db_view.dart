@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:msb_task3/Network/service/db_model.dart';
 
-import '../bloc/db/db_bloc.dart';
+import '../bloc/db/hive_bloc.dart';
 
 class HiveDatabaseScreen extends StatefulWidget {
   const HiveDatabaseScreen({super.key});
@@ -18,7 +18,7 @@ class _HiveDatabaseScreenState extends State<HiveDatabaseScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<DbBloc>(context).add(const GetData());
+    BlocProvider.of<HiveBloc>(context).add(const GetData());
   }
 
   @override
@@ -55,7 +55,7 @@ class _HiveDatabaseScreenState extends State<HiveDatabaseScreen> {
                     onPressed: () {
                       final newData = textEditingController.text;
                       if (_formKey.currentState!.validate()) {
-                        BlocProvider.of<DbBloc>(context).add(
+                        BlocProvider.of<HiveBloc>(context).add(
                           Create(hivedbModel: HivedbModel()..name = newData),
                         );
                         textEditingController.clear();
@@ -69,7 +69,7 @@ class _HiveDatabaseScreenState extends State<HiveDatabaseScreen> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: BlocBuilder<DbBloc, DbState>(
+            child: BlocBuilder<HiveBloc, HiveState>(
               builder: (context, state) {
                 if (state is DisplayAllDatas) {
                   if (state.hivedbModel.isEmpty) {

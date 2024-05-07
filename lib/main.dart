@@ -8,9 +8,10 @@ import 'package:msb_task3/Network/repository/firebaserepository.dart';
 import 'package:msb_task3/Network/service/db_model.dart';
 import 'package:msb_task3/Utils/navigation_bar.dart';
 import 'package:msb_task3/bloc/api/api_bloc.dart';
-import 'package:msb_task3/bloc/db/db_bloc.dart';
+import 'package:msb_task3/bloc/db/hive_bloc.dart';
 import 'package:msb_task3/bloc/firebase/firebase_bloc.dart';
 import 'package:msb_task3/navigation/bottom_nav_cubit.dart';
+import 'Utils/http.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -37,8 +38,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => BottomNavCubit()),
-        BlocProvider(create: (_) => UserBloc()),
-        BlocProvider(create: (_) => DbBloc()),
+        BlocProvider(create: (_) => ApiBloc()),
+        BlocProvider(create: (_) => HiveBloc()),
         BlocProvider(
           create: (_) => FirebaseBloc(productRepository: productRepository),
         ),
@@ -49,14 +50,5 @@ class MyApp extends StatelessWidget {
         home: MainWrapper(),
       ),
     );
-  }
-}
-
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
   }
 }

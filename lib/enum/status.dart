@@ -1,1 +1,1 @@
-enum PostStatus { success, loading, failure }
+enum TaskStatus { success, loading, failure }
