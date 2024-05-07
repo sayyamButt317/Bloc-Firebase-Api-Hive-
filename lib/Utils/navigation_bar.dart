@@ -5,7 +5,7 @@ import 'package:iconly/iconly.dart';
 import 'package:msb_task3/navigation/bottom_nav_cubit.dart';
 import 'package:msb_task3/view/api_view.dart';
 import 'package:msb_task3/view/db_view.dart';
-import 'package:msb_task3/view/home_view.dart';
+import 'package:msb_task3/view/firebase_view.dart';
 
 class MainWrapper extends StatefulWidget {
   const MainWrapper({super.key});
