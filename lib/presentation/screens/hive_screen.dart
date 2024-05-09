@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:msb_task3/Network/service/db_model.dart';
 import 'package:msb_task3/bussinessLogic/bloc/db/hive_state.dart';
-
 import '../../bussinessLogic/bloc/db/hive_bloc.dart';
+import '../../helper/enum/status.dart';
 
 class HiveScreen extends StatefulWidget {
   const HiveScreen({super.key});
@@ -14,6 +14,7 @@ class HiveScreen extends StatefulWidget {
 class _HiveDatabaseScreenState extends State<HiveScreen> {
   final TextEditingController textEditingController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +41,7 @@ class _HiveDatabaseScreenState extends State<HiveScreen> {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Please enter data ";
+                          return "Please enter data";
                         }
                         return null;
                       },
@@ -56,7 +57,8 @@ class _HiveDatabaseScreenState extends State<HiveScreen> {
                       if (_formKey.currentState!.validate()) {
                         BlocProvider.of<HiveBloc>(context).add(
                           AddDataonHive(
-                              hivedbModel: HivedbModel()..name = newData),
+                            hivedbModel: HivedbModel(newData),
+                          ),
                         );
                         textEditingController.clear();
                       }
@@ -71,11 +73,13 @@ class _HiveDatabaseScreenState extends State<HiveScreen> {
           Expanded(
             child: BlocBuilder<HiveBloc, HiveState>(
               builder: (context, state) {
-                if (state is DisplayData) {
+                if (state.postStatus == TaskStatus.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                // Check for success state
+                else if (state.postStatus == TaskStatus.success) {
                   if (state.hivedbModelList.isEmpty) {
-                    return const Center(
-                      child: Text('No data available'),
-                    );
+                    return const Center(child: Text('No data available'));
                   }
                   return ListView.builder(
                     itemCount: state.hivedbModelList.length,
@@ -86,14 +90,21 @@ class _HiveDatabaseScreenState extends State<HiveScreen> {
                       );
                     },
                   );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                }
+                // Check for failure state
+                else if (state.postStatus == TaskStatus.failure) {
+                  return Center(
+                    child: Text(state.message),
                   );
+                }
+                // Default case
+                else {
+                  return const Center(child: Text('An unknown error occurred.'));
                 }
               },
             ),
           ),
+
         ],
       ),
     );

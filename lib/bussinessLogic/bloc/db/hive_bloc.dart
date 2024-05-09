@@ -2,15 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:msb_task3/Network/service/db_model.dart';
 import 'package:msb_task3/bussinessLogic/bloc/db/hive_state.dart';
-
 import '../../../helper/Utils/log_helper.dart';
+import '../../../helper/enum/status.dart';
 import '../../../helper/hiveBox/hive_box.dart';
 part 'hive_event.dart';
 
 class HiveBloc extends Bloc<HiveEvent, HiveState> {
-  late Box<HivedbModel>? box; // Make the box nullable
+  late Box<HivedbModel>? box;
 
-  HiveBloc() : super(const HiveInitial()) {
+  HiveBloc() : super(const HiveState()) {
     openBox();
     on<AddDataonHive>(_addData);
     on<GetDataFromHive>(_getData);
@@ -22,29 +22,29 @@ class HiveBloc extends Bloc<HiveEvent, HiveState> {
 
   void _addData(AddDataonHive event, Emitter<HiveState> emit) async {
     try {
-      if (box != null) {
+      if (box!= null) {
         await box!.add(event.hivedbModel);
         final transaction = box!.values.toList();
-        emit(DisplayData(hivedbModelList: transaction));
+        emit(state.copyWith(postStatus: TaskStatus.success, message: "Data added", hivedbModelList: transaction));
       } else {
-        logger.e('Box is not initialized');
+        emit(const HiveState(postStatus: TaskStatus.failure, message: "Box not initialized"));
       }
     } catch (e) {
-      logger.e('$e');
+      emit(HiveState(postStatus: TaskStatus.failure, message: "Error adding data: $e"));
     }
   }
 
   void _getData(GetDataFromHive event, Emitter<HiveState> emit) async {
     try {
-      if (box != null) {
-        emit(const DataLoading());
+      if (box!= null) {
         final transactions = box!.values.toList();
-        emit(DisplayData(hivedbModelList: transactions));
+        emit(state.copyWith(postStatus: TaskStatus.success, message: "Data loaded", hivedbModelList: transactions));
       } else {
-        logger.e('Box is not initialized');
+        emit(const HiveState(postStatus: TaskStatus.failure, message: "Box not initialized"));
       }
     } catch (e) {
       logger.e('$e');
+      emit(HiveState(postStatus: TaskStatus.failure, message: "Error loading data: $e"));
     }
   }
 }

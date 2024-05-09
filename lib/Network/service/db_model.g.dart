@@ -16,7 +16,9 @@ class HivedbModelAdapter extends TypeAdapter<HivedbModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HivedbModel()..name = fields[0] as String;
+    return HivedbModel(
+      fields[0] as String,
+    );
   }
 
   @override

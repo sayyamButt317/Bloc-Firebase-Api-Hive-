@@ -4,6 +4,7 @@ abstract class HiveEvent {
 const HiveEvent();
 }
 class OpenHiveBox extends HiveEvent {}
+
 class AddDataonHive extends HiveEvent {
 final HivedbModel hivedbModel;
 const AddDataonHive({required this.hivedbModel});
