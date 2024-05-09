@@ -1,11 +1,11 @@
-class UserModel {
+class ApiModel {
   int? id;
   String? email;
   String? firstName;
   String? lastName;
   String? avatar;
 
-  UserModel({
+  ApiModel({
     this.id,
     this.email,
     this.firstName,
@@ -13,7 +13,7 @@ class UserModel {
     this.avatar,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  ApiModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
     firstName = json['first_name'];

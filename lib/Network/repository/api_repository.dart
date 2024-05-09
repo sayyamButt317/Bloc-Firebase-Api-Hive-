@@ -7,7 +7,7 @@ class ApiRepository {
 
   ApiRepository({required this.baseUrl});
 
-  Future<List<UserModel>> getUserData() async {
+  Future<List<ApiModel>> getUserData() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/users'));
 
@@ -16,7 +16,7 @@ class ApiRepository {
         final List<dynamic> userList = data['data'];
 
         return userList.map((e) {
-          return UserModel(
+          return ApiModel(
             firstName: e['first_name'] as String,
             avatar: e['avatar'] as String,
           );

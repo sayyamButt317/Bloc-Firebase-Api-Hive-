@@ -6,12 +6,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:msb_task3/Network/repository/firebase_repository.dart';
 import 'package:msb_task3/Network/service/db_model.dart';
-import 'package:msb_task3/Utils/navigation_bar.dart';
-import 'package:msb_task3/bloc/api/api_bloc.dart';
-import 'package:msb_task3/bloc/db/hive_bloc.dart';
-import 'package:msb_task3/bloc/firebase/firebase_bloc.dart';
-import 'package:msb_task3/navigation/bottom_nav_cubit.dart';
-import 'Utils/http.dart';
+import 'package:msb_task3/helper/Utils/navigation_bar.dart';
+import 'package:msb_task3/bussinessLogic/bloc/api/api_bloc.dart';
+import 'package:msb_task3/bussinessLogic/bloc/db/hive_bloc.dart';
+import 'package:msb_task3/bussinessLogic/bloc/firebase/firebase_bloc.dart';
+import 'package:msb_task3/bussinessLogic/cubit/navigation/bottom_nav_cubit.dart';
+import 'helper/Utils/http.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -25,13 +25,13 @@ void main() async {
   HttpOverrides.global = MyHttpOverrides();
   final FirebaseRepository productRepository = FirebaseRepository();
 
-  runApp(MyApp(productRepository: productRepository));
+  runApp(MyApp(firebaseRepository: productRepository));
 }
 
 class MyApp extends StatelessWidget {
-  final FirebaseRepository productRepository;
+  final FirebaseRepository firebaseRepository;
 
-  const MyApp({super.key, required this.productRepository});
+  const MyApp({super.key, required this.firebaseRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => ApiBloc()),
         BlocProvider(create: (_) => HiveBloc()),
         BlocProvider(
-          create: (_) => FirebaseBloc(productRepository: productRepository),
+          create: (_) => FirebaseBloc(firebaseRepository: firebaseRepository),
         ),
       ],
       child: const MaterialApp(

@@ -40,7 +40,6 @@ dependencies:
   retrofit: ^4.1.0
   dio: ^5.4.3+1
   iconly: ^1.0.1
-  equatable: ^2.0.2
   google_fonts: ^6.2.1
   logger:
   json_annotation: ^4.8.1

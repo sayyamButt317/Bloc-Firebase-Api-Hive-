@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:msb_task3/Network/model/firebase_model.dart';
-import 'package:msb_task3/Utils/log_helper.dart';
+import 'package:msb_task3/helper/Utils/log_helper.dart';
 
 class FirebaseRepository {
   final _fireCloud = FirebaseFirestore.instance.collection("data");
-  Future<void> create({required String name}) async {
+  Future<void> addDataonFirebase({required String name}) async {
     try {
       await _fireCloud.add({
         "name": name,
@@ -16,7 +16,7 @@ class FirebaseRepository {
     }
   }
 
-  Future<List<FirebaseModel>> get() async {
+  Future<List<FirebaseModel>> getFirebasedata() async {
     List<FirebaseModel> proList = [];
     try {
       final pro = await FirebaseFirestore.instance.collection('data').get();
